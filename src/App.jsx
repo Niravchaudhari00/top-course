@@ -42,7 +42,7 @@ function App() {
 
       <div>
         {
-          loading ? (<Spinner />) : (<Cards courses={data} />)
+          loading ? (<Spinner />) : (<Cards courses={data} category = {category} />)
         }
       </div>
 

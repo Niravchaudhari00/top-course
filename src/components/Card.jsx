@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import {FcLike , FcLikePlaceholder} from 'react-icons/fc'
+import { FcLike, FcLikePlaceholder } from 'react-icons/fc'
+import { toast } from 'react-toastify';
 const Card = (props) => {
+
      const courseList = props.listOfcours;
-     console.log(props);
 
      const [readmore, setReadmore] = useState(false)
      const description = readmore ? courseList.description : `${courseList.description.substring(0, 150)}...`;
@@ -12,9 +13,24 @@ const Card = (props) => {
      }
 
      // likehandler
-     const [like, setLike] = useState(true)
+     const like = props.like;
+     const setLike = props.setLike;
      const likehandler = () => {
-          setLike(!true)
+          if (like.includes(courseList.id)) {
+               // in array available
+               setLike((prev) => prev.filter((cid) => (cid !== courseList.id)));
+               toast.warning("Unliked")
+          } else {
+
+               if (like.length === 0) {
+                    setLike([courseList.id]);
+               } else {
+                    setLike((prev) => [...prev, courseList.id])
+               }
+               toast.success("liked")
+
+          }
+
      }
      return (
           <div className='w-96 bg-slate-800 rounded-md relative'>
@@ -25,13 +41,13 @@ const Card = (props) => {
                          width={400}
                          loading="lazy"
                          className='rounded-t-md'
-                         
+
                     />
                </div>
                <div className='likebtn absolute top-[11.3rem] right-2 bg-slate-100 p-3 w-[50px] h-[50px] flex justify-center rounded-full '>
                     <button onClick={likehandler}>
                          {
-                              like ? <FcLike size={30}/> : <FcLikePlaceholder size={30}/> 
+                              like.includes(courseList.id) ? <FcLike size={30} /> : <FcLikePlaceholder size={30} />
                          }
                     </button>
                </div>
